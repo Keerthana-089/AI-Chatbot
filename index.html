@@ -30,11 +30,24 @@
             overflow-y: auto;
         }
 
+        .message {
+            display: flex;
+            margin: 12px 0;
+        }
+
+        .user {
+            justify-content: flex-end;
+        }
+
+        .bot {
+            justify-content: flex-start;
+        }
+
         .bubble {
-            padding: 14px 18px;
-            border-radius: 20px;
-            max-width: 65%;
-            font-size: 15px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 50%;
+            word-wrap: break-word;
         }
 
         .user .bubble {
@@ -77,7 +90,7 @@
 
 <body>
 
-<div class="header">🤖 AI Chatbot</div>
+<div class="header">🤖 AI Chatbot <button onclick="clearChat()" style="float:right;margin-right:10px;">🗑️</button></div>
 
 <div class="chat-box" id="chatBox"></div>
 
@@ -89,16 +102,29 @@
 
 <script>
 const input = document.getElementById("userInput");
+const chatBox = document.getElementById("chatBox");
 
-input.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") sendMessage();
-});
+// Load old chats
+window.onload = function () {
+    let chats = JSON.parse(localStorage.getItem("chatHistory")) || [];
+    chats.forEach(c => addMessage(c.text, c.sender));
+};
 
+// Save message
+function saveMessage(text, sender) {
+    let chats = JSON.parse(localStorage.getItem("chatHistory")) || [];
+    chats.push({ text, sender });
+    localStorage.setItem("chatHistory", JSON.stringify(chats));
+}
+
+// Send message
 async function sendMessage() {
     let message = input.value.trim();
     if (!message) return;
 
     addMessage(message, "user");
+    saveMessage(message, "user");
+
     input.value = "";
 
     let typing = addMessage("Typing...", "bot", true);
@@ -112,12 +138,12 @@ async function sendMessage() {
     let data = await res.json();
     typing.remove();
 
-    typeEffect(data.response);
+    addMessage(data.response, "bot");
+    saveMessage(data.response, "bot");
 }
 
+// Add message
 function addMessage(text, sender, typing=false) {
-    let chatBox = document.getElementById("chatBox");
-
     let msg = document.createElement("div");
     msg.classList.add("message", sender);
 
@@ -136,40 +162,9 @@ function addMessage(text, sender, typing=false) {
     return msg;
 }
 
-function typeEffect(text) {
-    let chatBox = document.getElementById("chatBox");
-
-    let msg = document.createElement("div");
-    msg.classList.add("message", "bot");
-
-    let bubble = document.createElement("div");
-    bubble.classList.add("bubble");
-
-    msg.appendChild(bubble);
-    chatBox.appendChild(msg);
-
-    let i = 0;
-    function typing() {
-        if (i < text.length) {
-            bubble.innerText += text[i++];
-            setTimeout(typing, 15);
-        }
-    }
-    typing();
-}
-
-// 🎤 Voice input
-function startVoice() {
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = "en-US";
-
-    recognition.onresult = function(event) {
-        let transcript = event.results[0][0].transcript;
-        input.value = transcript;
-        sendMessage();
-    };
-
-    recognition.start();
+function clearChat() {
+    localStorage.removeItem("chatHistory");
+    location.reload();
 }
 </script>
 

@@ -20,6 +20,18 @@
         "Hello!",
         "Hey!"
       ]
+    },
+    {
+      "tag": "how_are_you",
+      "patterns": [
+        "how are you",
+        "how r you",
+        "how are u"
+      ],
+      "responses": [
+        "I'm good 😊 How about you?",
+        "Doing great!"
+      ]
     }
   ]
 }
