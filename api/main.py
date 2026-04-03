@@ -7,7 +7,7 @@ app = FastAPI()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-model = genai.GenerativeModel("gemini-pro")
+model = genai.GenerativeModel("models/text-bison-001")
 
 
 class ChatRequest(BaseModel):

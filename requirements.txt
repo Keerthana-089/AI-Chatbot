@@ -1,4 +1,4 @@
 fastapi
 uvicorn
 pydantic
-google-generativeai==0.7.2
+google-generativeai==0.3.2
