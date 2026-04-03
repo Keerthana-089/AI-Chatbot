@@ -6,25 +6,53 @@
     <style>
         body {
             margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: radial-gradient(circle at top, #1e3a8a, #020617);
+            font-family: 'Segoe UI';
+            display: flex;
+            height: 100vh;
+            background: #0f172a;
             color: white;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #020617;
+            padding: 20px;
+            border-right: 1px solid #1e293b;
+        }
+
+        .chat-section {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            height: 100vh;
         }
 
         .header {
             text-align: center;
             padding: 18px;
-            font-size: 22px;
+            font-size: 26px;
             font-weight: bold;
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            background: linear-gradient(90deg, #6366f1, #3b82f6);
+            color: white;
+            letter-spacing: 2px;
         }
 
-        .chat-box {
+        .logo {
+            color: #facc15;
+            margin-right: 6px;
+        }
+
+        .tagline {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        #chatBox {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
@@ -63,9 +91,8 @@
 
         .input-box {
             display: flex;
-            padding: 12px;
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
+            padding: 10px;
+            background: #1e293b;
         }
 
         input {
@@ -90,14 +117,27 @@
 
 <body>
 
-<div class="header">🤖 AI Chatbot <button onclick="clearChat()" style="float:right;margin-right:10px;">🗑️</button></div>
+<div class="container">
 
-<div class="chat-box" id="chatBox"></div>
+    <div class="sidebar">
+        <h2>🤖 ChatBot</h2>
+        <button onclick="clearChat()">New Chat</button>
+    </div>
 
-<div class="input-box">
-    <input id="userInput" placeholder="Type or speak..." />
-    <button class="mic-btn" onclick="startVoice()">🎤</button>
-    <button class="send-btn" onclick="sendMessage()">Send</button>
+    <div class="chat-section">
+        <div class="header">
+            <span class="logo">⚡</span> Xylo AI
+            <div class="tagline">Smart • Fast • Intelligent</div>
+        </div>
+
+        <div id="chatBox"></div>
+
+        <div class="input-box">
+            <input id="userInput" placeholder="Ask Xylo AI anything..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -106,8 +146,7 @@ const chatBox = document.getElementById("chatBox");
 
 // Load old chats
 window.onload = function () {
-    let chats = JSON.parse(localStorage.getItem("chatHistory")) || [];
-    chats.forEach(c => addMessage(c.text, c.sender));
+    addMessage("Hello! I’m Xylo AI 🤖 How can I help you today?", "bot");
 };
 
 // Save message

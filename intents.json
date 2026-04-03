@@ -25,12 +25,23 @@
       "tag": "how_are_you",
       "patterns": [
         "how are you",
-        "how r you",
-        "how are u"
+        "how are you doing",
+        "how r u",
+        "how is it going"
       ],
       "responses": [
-        "I'm good 😊 How about you?",
-        "Doing great!"
+        "I'm doing great! 😊 How about you?",
+        "All good here! What about you?",
+        "I'm fine! Ready to help you 🚀"
+      ]
+    },
+    {
+      "tag": "fallback",
+      "patterns": [],
+      "responses": [
+        "Hmm… I didn’t get that. Can you rephrase?",
+        "I’m still learning 😅 Try asking differently!",
+        "Sorry, I didn’t understand. Can you try again?"
       ]
     }
   ]
