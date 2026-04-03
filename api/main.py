@@ -6,8 +6,9 @@ import google.generativeai as genai
 app = FastAPI()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+print("API KEY:", os.getenv("GEMINI_API_KEY"))
 
-model = genai.GenerativeModel("gemini-pro")
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 
 class ChatRequest(BaseModel):
@@ -21,8 +22,15 @@ def home():
 
 @app.post("/chat")
 def chat(req: ChatRequest):
-    user_input = req.message
+    try:
+        print("User:", req.message)
 
-    response = model.generate_content(user_input)
+        response = model.generate_content(req.message)
 
-    return {"response": response.text}
+        print("Gemini:", response.text)
+
+        return {"response": response.text}
+
+    except Exception as e:
+        print("ERROR:", str(e))
+        return {"response": "⚠️ Error: " + str(e)}
